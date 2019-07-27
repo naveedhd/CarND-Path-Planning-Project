@@ -44,7 +44,7 @@ HighwayPlanner::HighwayPlanner() : lane_(1), ref_vel_(0.0) {
   }
 }
 
-void HighwayPlanner::operator()(uWS::WebSocket<uWS::SERVER> ws, char *data,
+void HighwayPlanner::operator()(uWS::WebSocket<uWS::SERVER> ws, char* data,
                                 size_t length, uWS::OpCode opCode) {
   // "42" at the start of the message means there's a websocket message
   // event.
@@ -104,8 +104,8 @@ void HighwayPlanner::operator()(uWS::WebSocket<uWS::SERVER> ws, char *data,
   bool car_ahead = false;
   bool car_left = false;
   bool car_righ = false;
-  for (int i = 0; i < sensor_fusion.size(); i++) {
-    float d = sensor_fusion[i][6];
+  for (const auto& sensor_fuse : sensor_fusion) {
+    float d = sensor_fuse[6];
     int car_lane = -1;
     // is it on the same lane we are
     if (d > 0 && d < 4) {
@@ -119,10 +119,10 @@ void HighwayPlanner::operator()(uWS::WebSocket<uWS::SERVER> ws, char *data,
       continue;
     }
     // Find car speed.
-    double vx = sensor_fusion[i][3];
-    double vy = sensor_fusion[i][4];
+    double vx = sensor_fuse[3];
+    double vy = sensor_fuse[4];
     double check_speed = sqrt(vx * vx + vy * vy);
-    double check_car_s = sensor_fusion[i][5];
+    double check_car_s = sensor_fuse[5];
     // Estimate car s position after executing previous trajectory.
     check_car_s += ((double)prev_size * 0.02 * check_speed);
 
